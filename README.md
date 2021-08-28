@@ -1,3 +1,9 @@
+##
+
+## TICKETBLOCK - Smart Tickets - Minimal fees! No more scalping!
+
+##
+
 ## Getting started
 
 Here's how to deploy this project

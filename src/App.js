@@ -1,11 +1,17 @@
 import "./App.css";
+// import { Welcome } from "./Welcome";
 import { useState } from "react";
 import { ethers } from "ethers";
 import Greeter from "./artifacts/contracts/Greeter.sol/Greeter.json";
 import Token from "./artifacts/contracts/Token.sol/Token.json";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import WelcomeBackground from "./resources/vid1.mp4";
+import SearchBack from "./resources/vid2.mp4";
+import VendorBack from "./resources/vid3.mp4";
+import DatePicker from "react-datepicker";
 
-const greeterAddress = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
-const tokenAddress = "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9";
+const greeterAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+const tokenAddress = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
 
 function App() {
   const [greeting, setGreetingValue] = useState();
@@ -73,29 +79,140 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <button onClick={fetchGreeting}>Fetch Greeting</button>
-        <button onClick={setGreeting}>Set Greeting</button>
-        <input
-          onChange={(e) => setGreetingValue(e.target.value)}
-          placeholder="Set greeting"
-        />
-
-        <br />
-        <button onClick={getBalance}>Get Balance</button>
-        <button onClick={sendCoins}>Send Coins</button>
-        <input
-          onChange={(e) => setUserAccount(e.target.value)}
-          placeholder="Account ID"
-        />
-        <input
-          onChange={(e) => setAmount(e.target.value)}
-          placeholder="Amount"
-        />
-      </header>
-    </div>
+    <Router>
+      <div className="App overlay full">
+        <div>
+          <Switch>
+            <Route exact path="/">
+              <Welcome />
+            </Route>
+            <Route path="/search">
+              <Search />
+            </Route>
+            <Route path="/vendor">
+              <Vendor />
+            </Route>
+            <Route path="/about">
+              <About />
+            </Route>
+          </Switch>
+          <HeaderLinks />
+        </div>
+      </div>
+    </Router>
   );
-}
 
+  function HeaderLinks() {
+    return (
+      <div>
+        <ul class="no-bullets overlay headLinks">
+          <li>
+            <Link to="/">Welcome</Link>
+          </li>
+          <li>
+            <Link to="/search">Event Search</Link>
+          </li>
+          <li>
+            <Link to="/vendor">Add Event</Link>
+          </li>
+          <li>
+            <Link to="/about">About</Link>
+          </li>
+        </ul>
+
+        <hr />
+      </div>
+    );
+  }
+
+  function Welcome() {
+    const [startDate, setStartDate] = useState(new Date());
+    return (
+      <div>
+        <video id="vid" className="videoTag" autoPlay loop muted>
+          <source src={WelcomeBackground} type="video/mp4" />
+        </video>
+        <div class="overlay WelcomeMsg">
+          <h2>
+            Welcome To TicketBlock. <br />
+            Giving the power of tickets back to the people <br />
+            Through the power of BlockChain
+          </h2>
+
+          <form>
+            <input
+              type="text"
+              class="city"
+              name="city"
+              placeholder="City or Zip"
+            />
+            {/* <DatePicker
+              selected={startDate}
+              onChange={(date) => setStartDate(date)}
+            /> */}
+            <input
+              type="text"
+              class="searchTerm"
+              name="searchTerm"
+              placeholder="Search for artist, venues, and events"
+            />
+            <input class="submit" type="submit" value="Search" />
+            <br />
+            <input type="reset" class="submit" defaultValue="Clear" />
+          </form>
+        </div>
+      </div>
+    );
+  }
+
+  function Search() {
+    return (
+      <div>
+        <video className="videoTag" autoPlay loop muted>
+          <source src={SearchBack} type="video/mp4" />
+        </video>
+        <h2>Search</h2>
+      </div>
+    );
+  }
+
+  function Vendor() {
+    return (
+      <div>
+        <video className="videoTag" autoPlay loop muted>
+          <source src={VendorBack} type="video/mp4" />
+        </video>
+        <h2>Vendor</h2>
+      </div>
+    );
+  }
+
+  function About() {
+    return (
+      <div>
+        <h2>About</h2>
+        <header className="App-header">
+          <button onClick={fetchGreeting}>Fetch Greeting</button>
+          <button onClick={setGreeting}>Set Greeting</button>
+          <input
+            onChange={(e) => setGreetingValue(e.target.value)}
+            placeholder="Set greeting"
+          />
+
+          <br />
+          <button onClick={getBalance}>Get Balance</button>
+          <button onClick={sendCoins}>Send Coins</button>
+          <input
+            onChange={(e) => setUserAccount(e.target.value)}
+            placeholder="Account ID"
+          />
+          <input
+            onChange={(e) => setAmount(e.target.value)}
+            placeholder="Amount"
+          />
+        </header>
+      </div>
+    );
+  }
+}
 export default App;
