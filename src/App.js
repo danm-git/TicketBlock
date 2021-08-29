@@ -1,13 +1,12 @@
 import "./App.css";
-// import { Welcome } from "./Welcome";
 import { useState } from "react";
 import { ethers } from "ethers";
 import Greeter from "./artifacts/contracts/Greeter.sol/Greeter.json";
 import Token from "./artifacts/contracts/Token.sol/Token.json";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import WelcomeBackground from "./resources/vid1.mp4";
-import SearchBack from "./resources/vid2.mp4";
-import VendorBack from "./resources/vid3.mp4";
+import SearchBack from "./resources/vid3.mp4";
+import VendorBack from "./resources/vid2.mp4";
 import DatePicker from "react-datepicker";
 
 const greeterAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
@@ -84,10 +83,10 @@ function App() {
         <div>
           <Switch>
             <Route exact path="/">
-              <Welcome />
+              <Home />
             </Route>
-            <Route path="/search">
-              <Search />
+            <Route path="/AccountInfo">
+              <AccountInfo />
             </Route>
             <Route path="/vendor">
               <Vendor />
@@ -104,32 +103,32 @@ function App() {
 
   function HeaderLinks() {
     return (
-      <div>
-        <ul class="no-bullets overlay headLinks">
-          <li>
-            <Link to="/">Welcome</Link>
-          </li>
-          <li>
-            <Link to="/search">Event Search</Link>
-          </li>
-          <li>
+      <div class="headerLinks">
+        <div class="no-bullets overlay headLinks headerLinks">
+          <span>
+            <Link to="/">Home</Link>
+          </span>
+          <span>
+            <Link to="/AccountInfo">Account Info</Link>
+          </span>
+          <span>
             <Link to="/vendor">Add Event</Link>
-          </li>
-          <li>
+          </span>
+          <span>
             <Link to="/about">About</Link>
-          </li>
-        </ul>
+          </span>
+        </div>
 
         <hr />
       </div>
     );
   }
 
-  function Welcome() {
+  function Home() {
     const [startDate, setStartDate] = useState(new Date());
     return (
       <div>
-        <video id="vid" className="videoTag" autoPlay loop muted>
+        <video id="vid" className="background videoTag" autoPlay loop muted>
           <source src={WelcomeBackground} type="video/mp4" />
         </video>
         <div class="overlay WelcomeMsg">
@@ -165,13 +164,27 @@ function App() {
     );
   }
 
-  function Search() {
+  function AccountInfo() {
     return (
       <div>
-        <video className="videoTag" autoPlay loop muted>
+        <video className="background videoTag" autoPlay loop muted>
           <source src={SearchBack} type="video/mp4" />
         </video>
-        <h2>Search</h2>
+        <div class="overlay WelcomeMsg">
+          <h2>Account Information</h2>
+
+          <form>
+            <input
+              type="text"
+              class="accountNumber"
+              name="accountNumber"
+              placeholder="Please enter your account number..."
+            />
+            <input class="submit" type="submit" value="Search" />
+            <br />
+            <input type="reset" class="submit" defaultValue="Clear" />
+          </form>
+        </div>
       </div>
     );
   }
