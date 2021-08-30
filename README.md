@@ -11,7 +11,7 @@ Here's how to deploy this project
 1. Clone the repo
 
 ```sh
-git clone https://github.com/dabit3/full-stack-ethereum.git
+git clone https://github.com/danm-git/TicketBlock
 ```
 
 2. Install the dependencies

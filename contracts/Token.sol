@@ -4,8 +4,8 @@ pragma solidity ^0.8.3;
 import "hardhat/console.sol";
 
 contract Token {
-  string public name = "Dan Token";
-  string public symbol = "DAN";
+  string public name = "ETH Token";
+  string public symbol = "ETH";
   uint public totalSupply = 1000000;
   address public owner;
   mapping(address => uint) balances;

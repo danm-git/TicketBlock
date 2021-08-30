@@ -1,70 +1,74 @@
 import "./App.css";
 import { useState } from "react";
 import { ethers } from "ethers";
-import Greeter from "./artifacts/contracts/Greeter.sol/Greeter.json";
 import Token from "./artifacts/contracts/Token.sol/Token.json";
+import DanToken from "./artifacts/contracts/DanToken.sol/DanToken.json";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import WelcomeBackground from "./resources/vid1.mp4";
 import SearchBack from "./resources/vid3.mp4";
-import VendorBack from "./resources/vid2.mp4";
+import VendorBack from "./resources/vid4.mp4";
+import AboutBack from "./resources/vid2.mp4";
+import DanFaucetBack from "./resources/vid7.mp4";
 import DatePicker from "react-datepicker";
 
-const greeterAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
-const tokenAddress = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
+const ethTokenAddress = "0x3Aa5ebB10DC797CAC828524e59A333d0A371443c";
+const danTokenAddress = "0xc6e7DF5E7b4f2A278906862b61205850344D4e7d";
+const danWalletAddress = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
 
 function App() {
-  const [greeting, setGreetingValue] = useState();
   const [userAccount, setUserAccount] = useState();
-  const [amount, setAmount] = useState();
-  const [balance, setBalance] = useState();
+  const [ethBalance, setEthBalance] = useState();
+  const [danBalance, setDanBalance] = useState();
+  const [displayedUserAccount, setDisplayedUserAccount] = useState();
+  const faucetAmount = 100;
 
   async function requestAccount() {
     await window.ethereum.request({ method: "eth_requestAccounts" });
   }
 
-  async function fetchGreeting() {
-    if (typeof window.ethereum !== "undefined") {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      console.log({ provider });
-      const contract = new ethers.Contract(
-        greeterAddress,
-        Greeter.abi,
-        provider
-      );
-      try {
-        const data = await contract.greet();
-        console.log("data: ", data);
-      } catch (err) {
-        console.log("Error: ", err);
-      }
+  function getActiveAccount() {
+    let account = null;
+    if (userAccount) {
+      account = userAccount;
+      console.log(`1: ${account}`);
+    } else {
+      account = danWalletAddress;
+      console.log(`2: ${account}`);
     }
+
+    return account;
   }
 
   async function getEthBalance() {
     if (typeof window.ethereum !== "undefined") {
-      const [account] = await window.ethereum.request({
-        method: "eth_requestAccounts",
-      });
+      let account = getActiveAccount();
       const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const contract = new ethers.Contract(tokenAddress, Token.abi, provider);
+      const contract = new ethers.Contract(
+        ethTokenAddress,
+        Token.abi,
+        provider
+      );
+
       const balance = await contract.balanceOf(account);
       console.log("Balance: ", balance.toString());
-      setBalance(balance);
+      setEthBalance(balance);
       setUserAccount(account);
     }
   }
 
-  async function setGreeting() {
-    if (!greeting) return;
+  async function getDanBalance() {
     if (typeof window.ethereum !== "undefined") {
-      await requestAccount();
+      let account = getActiveAccount();
       const provider = new ethers.providers.Web3Provider(window.ethereum);
-      console.log({ provider });
-      const signer = provider.getSigner();
-      const contract = new ethers.Contract(greeterAddress, Greeter.abi, signer);
-      const transaction = await contract.setGreeting(greeting);
-      await transaction.wait();
-      fetchGreeting();
+      const contract = new ethers.Contract(
+        danTokenAddress,
+        DanToken.abi,
+        provider
+      );
+      const danBalance = await contract.balanceOf(account);
+      console.log("DAN Balance: ", danBalance.toString());
+      setDanBalance(danBalance);
+      setUserAccount(account);
     }
   }
 
@@ -73,11 +77,43 @@ function App() {
       await requestAccount();
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
-      const contract = new ethers.Contract(tokenAddress, Token.abi, signer);
-      const transaction = await contract.transfer(userAccount, amount);
+      const contract = new ethers.Contract(ethTokenAddress, Token.abi, signer);
+      const transaction = await contract.transfer(userAccount, faucetAmount);
       await transaction.wait();
-      console.log(`${amount} Coins successfully sent to ${userAccount}`);
+      console.log(`${faucetAmount} Coins successfully sent to ${userAccount}`);
     }
+  }
+
+  async function accountInfoSearch() {
+    setDisplayedUserAccount(getActiveAccount());
+    getDanBalance();
+    getEthBalance();
+  }
+
+  async function danTokenFaucet() {
+    if (typeof window.ethereum !== "undefined") {
+      await requestAccount();
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(
+        danTokenAddress,
+        DanToken.abi,
+        signer
+      );
+
+      let account = getActiveAccount();
+      contract.faucet(account, 100);
+      console.log(
+        `1: ${faucetAmount} Coins successfully sent to ${userAccount}`
+      );
+    }
+  }
+
+  async function clearPage() {
+    setUserAccount("");
+    setEthBalance("");
+    setDisplayedUserAccount("");
+    setDanBalance("");
   }
 
   return (
@@ -96,6 +132,9 @@ function App() {
             </Route>
             <Route path="/about">
               <About />
+            </Route>
+            <Route path="/DanTokens">
+              <DanTokens />
             </Route>
           </Switch>
           <HeaderLinks />
@@ -119,6 +158,9 @@ function App() {
           </span>
           <span>
             <Link to="/about">About</Link>
+          </span>
+          <span>
+            <Link to="/DanTokens">Dan Token Faucet</Link>
           </span>
         </div>
 
@@ -175,29 +217,116 @@ function App() {
         </video>
         <div class="overlay WelcomeMsg">
           <h2>Account Information</h2>
-
-          <form>
-            <input
-              type="text"
-              class="accountNumber"
-              name="accountNumber"
-              placeholder="Please enter your account number..."
-            />
-            <input class="submit" type="submit" value="Search" />
-            <br />
-            <input type="reset" class="submit" defaultValue="Clear" />
-          </form>
-        </div>
-        <div class="accountInfoTable">
-          {/* <label id="nameLabel">Account Name:</label>
           <input
+            id="sendTokenAddress"
+            type="text"
+            class="accountNumber"
+            name="accountNumber"
+            placeholder="Please enter your account number..."
+            onChange={(e) => setUserAccount(e.target.value)}
+            value={userAccount}
+          />
+          <button onClick={accountInfoSearch}>Search</button>
+          <br />
+        </div>
+        <div class="danFaucetInfoTable">
+          <br />
+          <label id="acctNumLabel">Display Account:</label>
+          <input
+            class="genInput"
             disabled
-            onChange={(e) => setAmount(e.target.value)}
-            placeholder="Your Name"
-          /> */}
+            size="40"
+            value={displayedUserAccount}
+            onChange={(e) => {
+              this.value = displayedUserAccount;
+              this.accountInfoSearch();
+            }}
+            placeholder="Account ID"
+          />{" "}
+          <br />
+          <label id="currBalance">ETH Balance:</label>
+          <input
+            class="genInput"
+            disabled
+            value={ethBalance}
+            onChange={(e) => {
+              this.setEthBalance(e.target.value);
+              this.value = ethBalance;
+            }}
+            placeholder="Current ETH Balance"
+          />
+          <br />
+          <label id="currBalance">DAN Balance:</label>
+          <input
+            class="genInput"
+            disabled
+            value={danBalance}
+            onChange={(e) => {
+              this.setDanBalance(e.target.value);
+              this.value = danBalance;
+            }}
+            placeholder="Current Dan Balance"
+          />
+          <br />
+          <br />
+          <button onClick={clearPage}>Clear Page</button>
+        </div>
+      </div>
+    );
+  }
+
+  function Vendor() {
+    return (
+      <div>
+        <video className="background videoTag" autoPlay loop muted>
+          <source src={VendorBack} type="video/mp4" />
+        </video>
+        <div class="overlay WelcomeMsg">
+          <h2>Vendor</h2>
+        </div>
+      </div>
+    );
+  }
+
+  function About() {
+    return (
+      <div>
+        <video className="background videoTag" autoPlay loop muted>
+          <source src={AboutBack} type="video/mp4" />
+        </video>
+        <div class="overlay WelcomeMsg">
+          <h2>About</h2>
+        </div>
+      </div>
+    );
+  }
+
+  function DanTokens() {
+    return (
+      <div>
+        <video className="background videoTag" autoPlay loop muted>
+          <source src={DanFaucetBack} type="video/mp4" />
+        </video>
+        {/* <form> */}
+        <div class="overlay WelcomeMsg">
+          <h2>Dan Token Faucet</h2>
+          <input
+            id="sendTokenAddress"
+            type="text"
+            class="accountNumber"
+            name="accountNumber"
+            placeholder="Please enter your account number..."
+            onChange={(e) => setUserAccount(e.target.value)}
+            value={userAccount}
+          />
+          <button onClick={danTokenFaucet}>Send Me Dan!</button>
+          <br />
+        </div>
+        <div class="danFaucetInfoTable">
           <br />
           <label id="acctNumLabel">Account #:</label>
           <input
+            class="genInput"
             disabled
             size="40"
             value={userAccount}
@@ -208,58 +337,36 @@ function App() {
             placeholder="Account ID"
           />{" "}
           <br />
-          <label id="currBalance">Current ETH Balance:</label>
+          <label id="currBalance">ETH Balance:</label>
           <input
+            class="genInput"
             disabled
-            value={balance}
+            value={ethBalance}
             onChange={(e) => {
-              this.setBalance(e.target.value);
-              this.value = balance;
+              this.setEthBalance(e.target.value);
+              this.value = ethBalance;
             }}
-            placeholder="Current Balance"
+            placeholder="Current ETH Balance"
           />
-          <br />
           <button onClick={getEthBalance}>Get ETH Balance</button>
+          <br />
+          <label id="currBalance">DAN Balance:</label>
+          <input
+            class="genInput"
+            disabled
+            value={danBalance}
+            onChange={(e) => {
+              this.setDanBalance(e.target.value);
+              this.value = danBalance;
+            }}
+            placeholder="Current Dan Balance"
+          />
+          <button onClick={getDanBalance}>Get Dan Balance</button>
+          <br />
+          <br />
+          <button onClick={clearPage}>Clear Page</button>
         </div>
-      </div>
-    );
-  }
-
-  function Vendor() {
-    return (
-      <div>
-        <video className="videoTag" autoPlay loop muted>
-          <source src={VendorBack} type="video/mp4" />
-        </video>
-        <h2>Vendor</h2>
-      </div>
-    );
-  }
-
-  function About() {
-    return (
-      <div>
-        <h2>About</h2>
-        <header className="App-header">
-          <button onClick={fetchGreeting}>Fetch Greeting</button>
-          <button onClick={setGreeting}>Set Greeting</button>
-          <input
-            onChange={(e) => setGreetingValue(e.target.value)}
-            placeholder="Set greeting"
-          />
-
-          <br />
-          <button onClick={getEthBalance}>Get ETH Balance</button>
-          <button onClick={sendCoins}>Send Coins</button>
-          <input
-            onChange={(e) => setUserAccount(e.target.value)}
-            placeholder="Account ID"
-          />
-          <input
-            onChange={(e) => setAmount(e.target.value)}
-            placeholder="Amount"
-          />
-        </header>
+        {/* </form> */}
       </div>
     );
   }
