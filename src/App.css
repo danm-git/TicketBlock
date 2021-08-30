@@ -71,6 +71,21 @@ body {
   z-index: 2147483647;
 }
 
+.accountInfoTable {
+  position: absolute;
+  /* top: 0px; */
+  margin-top: 20%;
+  margin-left: 33%;
+  color: #fff;
+  text-align: center;
+  font-size: 20px;
+  /* background-color: rgba(221, 221, 221, 0.3); */
+  width: 640px;
+  height: 700px;
+  /* padding: 10px 0; */
+  z-index: 2147483647;
+}
+
 .background {
   z-index: 1;
   position: fixed;
@@ -144,4 +159,8 @@ body {
   height: 45px;
   width: 400px;
   font-size: 16px;
+}
+
+.userAccountInput {
+  size: "100";
 }

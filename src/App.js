@@ -16,6 +16,7 @@ function App() {
   const [greeting, setGreetingValue] = useState();
   const [userAccount, setUserAccount] = useState();
   const [amount, setAmount] = useState();
+  const [balance, setBalance] = useState();
 
   async function requestAccount() {
     await window.ethereum.request({ method: "eth_requestAccounts" });
@@ -39,7 +40,7 @@ function App() {
     }
   }
 
-  async function getBalance() {
+  async function getEthBalance() {
     if (typeof window.ethereum !== "undefined") {
       const [account] = await window.ethereum.request({
         method: "eth_requestAccounts",
@@ -48,6 +49,8 @@ function App() {
       const contract = new ethers.Contract(tokenAddress, Token.abi, provider);
       const balance = await contract.balanceOf(account);
       console.log("Balance: ", balance.toString());
+      setBalance(balance);
+      setUserAccount(account);
     }
   }
 
@@ -185,6 +188,39 @@ function App() {
             <input type="reset" class="submit" defaultValue="Clear" />
           </form>
         </div>
+        <div class="accountInfoTable">
+          {/* <label id="nameLabel">Account Name:</label>
+          <input
+            disabled
+            onChange={(e) => setAmount(e.target.value)}
+            placeholder="Your Name"
+          /> */}
+          <br />
+          <label id="acctNumLabel">Account #:</label>
+          <input
+            disabled
+            size="40"
+            value={userAccount}
+            onChange={(e) => {
+              this.setuserAccount(e.target.value);
+              this.value = userAccount;
+            }}
+            placeholder="Account ID"
+          />{" "}
+          <br />
+          <label id="currBalance">Current ETH Balance:</label>
+          <input
+            disabled
+            value={balance}
+            onChange={(e) => {
+              this.setBalance(e.target.value);
+              this.value = balance;
+            }}
+            placeholder="Current Balance"
+          />
+          <br />
+          <button onClick={getEthBalance}>Get ETH Balance</button>
+        </div>
       </div>
     );
   }
@@ -213,7 +249,7 @@ function App() {
           />
 
           <br />
-          <button onClick={getBalance}>Get Balance</button>
+          <button onClick={getEthBalance}>Get ETH Balance</button>
           <button onClick={sendCoins}>Send Coins</button>
           <input
             onChange={(e) => setUserAccount(e.target.value)}
