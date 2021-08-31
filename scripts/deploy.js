@@ -6,9 +6,12 @@ async function main() {
   console.log("Deploying contracts with the account:", deployer.address);
 
   // ETH TOKEN
-  const Token = await hre.ethers.getContractFactory("Token");
-  const token = await Token.deploy();
-  console.log("ETH Token deployed to:", token.address);
+  // const Token = await hre.ethers.getContractFactory("Token");
+  // const token = await Token.deploy();
+  // console.log("ETH Token deployed to:", token.address);
+  // const EthToken = await hre.ethers.getContractFactory("EthToken");
+  // const ethToken = await EthToken.deploy("EthToken", "ETH");
+  // console.log("ETH Token deployed to:", ethToken.address);
 
   // DAN TOKEN
   const DanToken = await hre.ethers.getContractFactory("DanToken");

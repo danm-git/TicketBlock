@@ -12,13 +12,13 @@ task("accounts", "Prints the list of accounts", async () => {
 });
 
 task("balance", "Prints an account's balance")
-.addParam("account", "The account's address")
-.setAction(async taskArgs => {
-  const account = web3.utils.toChecksumAddress(taskArgs.account);
-  const balance = await web3.eth.getBalance(account);
+  .addParam("account", "The account's address")
+  .setAction(async (taskArgs) => {
+    const account = web3.utils.toChecksumAddress(taskArgs.account);
+    const balance = await web3.eth.getBalance(account);
 
-  console.log(web3.utils.fromWei(balance, "ether"), "ETH");
-});
+    console.log(web3.utils.fromWei(balance, "ether"), "ETH");
+  });
 
 // You need to export an object to set up your config
 // Go to https://hardhat.org/config/ to learn more
@@ -29,21 +29,22 @@ task("balance", "Prints an account's balance")
 module.exports = {
   defaultNetwork: "hardhat",
   paths: {
-    artifacts: './src/artifacts',
+    artifacts: "./src/artifacts",
   },
   networks: {
     hardhat: {
       chainId: 1337,
     },
-    // ropsten: {
-    //   url: "https://ropsten.infura.io/v3/projectid",
-    //   accounts: [process.env.a2key]
-    // },
+    ropsten: {
+      url: "https://ropsten.infura.io/v3/9a855c04e96a4c54964e4729a9186d66",
+      accounts: [
+        "0x20aaf9f5b3b4e74ad06fd05fbb3dedeab0b9f7f77741c978ec383d5f65137365",
+      ],
+    },
     // rinkeby: {
     //   url: "https://rinkeby.infura.io/v3/projectid",
-    //   accounts: [process.env.a2key]
-    // }
+    //   accounts: [process.env.a2key],
+    // },
   },
   solidity: "0.8.3",
 };
-

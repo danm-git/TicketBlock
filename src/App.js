@@ -1,7 +1,6 @@
 import "./App.css";
 import { useState } from "react";
 import { ethers } from "ethers";
-import Token from "./artifacts/contracts/Token.sol/Token.json";
 import DanToken from "./artifacts/contracts/DanToken.sol/DanToken.json";
 import NFToken from "./artifacts/contracts/NFTicket.sol/NFTicket.json";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
@@ -12,12 +11,13 @@ import AboutBack from "./resources/vid2.mp4";
 import DanFaucetBack from "./resources/vid7.mp4";
 import DatePicker from "react-datepicker";
 
+const Web3 = require("web3");
+
 const danWalletAddress = "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199";
 
 const contractAddress = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
-const ethTokenAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
-const danTokenAddress = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
-const nftTokenAddress = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
+const danTokenAddress = "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6";
+const nftTokenAddress = "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853";
 
 function App() {
   const [userAccount, setUserAccount] = useState();
@@ -47,20 +47,19 @@ function App() {
     if (typeof window.ethereum !== "undefined") {
       let account = getActiveAccount();
       const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const contract = new ethers.Contract(
-        ethTokenAddress,
-        Token.abi,
-        provider
-      );
 
-      const balance = await contract.balanceOf(account);
-      console.log("Balance: ", balance.toString());
-      setEthBalance(balance);
-      //setUserAccount(account);
+      provider.getBalance(account).then((balance) => {
+        // convert a currency unit from wei to ether
+        const balanceInEth = ethers.utils.formatEther(balance);
+        setEthBalance(balanceInEth);
+        console.log("balanceInEth: ", balanceInEth.toString());
+      });
     }
   }
 
   async function getDanBalance() {
+    console.log("start Dan");
+
     if (typeof window.ethereum !== "undefined") {
       let account = getActiveAccount();
       const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -69,24 +68,30 @@ function App() {
         DanToken.abi,
         provider
       );
+      console.log(" Dan balance...");
+
       const danBalance = await contract.balanceOf(account);
-      console.log("DAN Balance: ", danBalance.toString());
-      setDanBalance(danBalance);
-      //setUserAccount(account);
+
+      const danBalanceInEth = ethers.utils.formatEther(danBalance);
+      console.log(
+        "DAN Balance: ",
+        danBalance.toString() + "  - danBalanceInEth=" + danBalanceInEth
+      );
+      setDanBalance(danBalanceInEth);
     }
   }
 
-  async function sendCoins() {
-    if (typeof window.ethereum !== "undefined") {
-      await requestAccount();
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
-      const contract = new ethers.Contract(ethTokenAddress, Token.abi, signer);
-      const transaction = await contract.transfer(userAccount, faucetAmount);
-      await transaction.wait();
-      console.log(`${faucetAmount} Coins successfully sent to ${userAccount}`);
-    }
-  }
+  // async function sendCoins() {
+  //   if (typeof window.ethereum !== "undefined") {
+  //     await requestAccount();
+  //     const provider = new ethers.providers.Web3Provider(window.ethereum);
+  //     const signer = provider.getSigner();
+  //     const contract = new ethers.Contract(ethTokenAddress, Token.abi, signer);
+  //     const transaction = await contract.transfer(userAccount, faucetAmount);
+  //     await transaction.wait();
+  //     console.log(`${faucetAmount} Coins successfully sent to ${userAccount}`);
+  //   }
+  // }
 
   async function accountInfoSearch() {
     setDisplayedUserAccount(getActiveAccount());
@@ -185,8 +190,8 @@ function App() {
 
   function HeaderLinks() {
     return (
-      <div class="headerLinks">
-        <div class="no-bullets overlay headLinks headerLinks">
+      <div className="headerLinks">
+        <div className="no-bullets overlay headLinks headerLinks">
           {/* <span>
             <Link to="/">Home</Link>
           </span> */}
@@ -216,7 +221,7 @@ function App() {
         <video id="vid" className="background videoTag" autoPlay loop muted>
           <source src={WelcomeBackground} type="video/mp4" />
         </video>
-        <div class="overlay WelcomeMsg">
+        <div className="overlay WelcomeMsg">
           <h2>
             Welcome To TicketBlock. <br />
             Giving the power of tickets back to the people <br />
@@ -226,7 +231,7 @@ function App() {
           <form>
             <input
               type="text"
-              class="city"
+              className="city"
               name="city"
               placeholder="City or Zip"
             />
@@ -236,13 +241,13 @@ function App() {
             /> */}
             <input
               type="text"
-              class="searchTerm"
+              className="searchTerm"
               name="searchTerm"
               placeholder="Search for artist, venues, and events"
             />
-            <input class="submit" type="submit" value="Search" />
+            <input className="submit" type="submit" value="Search" />
             <br />
-            <input type="reset" class="submit" defaultValue="Clear" />
+            <input type="reset" className="submit" defaultValue="Clear" />
           </form>
         </div>
       </div>
@@ -255,12 +260,12 @@ function App() {
         <video className="background videoTag" autoPlay loop muted>
           <source src={SearchBack} type="video/mp4" />
         </video>
-        <div class="overlay WelcomeMsg">
+        <div className="overlay WelcomeMsg">
           <h2>Account Information</h2>
           <input
             id="sendTokenAddress"
             type="text"
-            class="accountNumber"
+            className="accountNumber"
             name="accountNumber"
             placeholder="Please enter your account number..."
             onChange={(e) => setUserAccount(e.target.value)}
@@ -269,11 +274,11 @@ function App() {
           <button onClick={accountInfoSearch}>Search</button>
           <br />
         </div>
-        <div class="danFaucetInfoTable">
+        <div className="danFaucetInfoTable">
           <br />
           <label id="acctNumLabel">Display Account:</label>
           <input
-            class="genInput"
+            className="genInput"
             disabled
             size="40"
             value={displayedUserAccount}
@@ -286,7 +291,7 @@ function App() {
           <br />
           <label id="currBalance">ETH Balance:</label>
           <input
-            class="genInput"
+            className="genInput"
             disabled
             value={ethBalance}
             onChange={(e) => {
@@ -298,7 +303,7 @@ function App() {
           <br />
           <label id="currBalance">DAN Balance:</label>
           <input
-            class="genInput"
+            className="genInput"
             disabled
             value={danBalance}
             onChange={(e) => {
@@ -321,12 +326,12 @@ function App() {
         <video className="background videoTag" autoPlay loop muted>
           <source src={VendorBack} type="video/mp4" />
         </video>
-        <div class="overlay WelcomeMsg">
+        <div className="overlay WelcomeMsg">
           <h2>Vendor</h2>
           <input
             id="mintNewToken"
             type="text"
-            class="mintNewToken"
+            className="mintNewToken"
             name="mintNewToken"
             placeholder="Please enter your account number..."
             onChange={(e) => setUserAccount(e.target.value)}
@@ -347,7 +352,7 @@ function App() {
         <video className="background videoTag" autoPlay loop muted>
           <source src={AboutBack} type="video/mp4" />
         </video>
-        <div class="overlay WelcomeMsg">
+        <div className="overlay WelcomeMsg">
           <h2>About</h2>
         </div>
       </div>
@@ -361,12 +366,12 @@ function App() {
           <source src={DanFaucetBack} type="video/mp4" />
         </video>
         {/* <form> */}
-        <div class="overlay WelcomeMsg">
+        <div className="overlay WelcomeMsg">
           <h2>Dan Token Faucet</h2>
           <input
             id="sendTokenAddress"
             type="text"
-            class="accountNumber"
+            className="accountNumber"
             name="accountNumber"
             placeholder="Please enter your account number..."
             onChange={(e) => setUserAccount(e.target.value)}
@@ -375,11 +380,11 @@ function App() {
           <button onClick={danTokenFaucet}>Send Me Dan!</button>
           <br />
         </div>
-        <div class="danFaucetInfoTable">
+        <div className="danFaucetInfoTable">
           <br />
           <label id="acctNumLabel">Account #:</label>
           <input
-            class="genInput"
+            className="genInput"
             disabled
             size="40"
             value={userAccount}
@@ -392,7 +397,7 @@ function App() {
           <br />
           <label id="currBalance">ETH Balance:</label>
           <input
-            class="genInput"
+            className="genInput"
             disabled
             value={ethBalance}
             onChange={(e) => {
@@ -405,7 +410,7 @@ function App() {
           <br />
           <label id="currBalance">DAN Balance:</label>
           <input
-            class="genInput"
+            className="genInput"
             disabled
             value={danBalance}
             onChange={(e) => {
