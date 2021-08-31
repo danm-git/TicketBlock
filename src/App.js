@@ -15,16 +15,16 @@ const Web3 = require("web3");
 
 const danWalletAddress = "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199";
 
-const contractAddress = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
-const danTokenAddress = "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6";
-const nftTokenAddress = "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853";
+const contractAddress = "0xAB41A0D8B85d88518C672a451032a69d95043aB8";
+const danTokenAddress = "0x99f8948338feB84A2b61686D9B081A9951E7FC60";
+const nftTokenAddress = "0x114CE40589BFc609E4FB42A84c63Bdf2bBE5793e";
 
 function App() {
   const [userAccount, setUserAccount] = useState();
   const [ethBalance, setEthBalance] = useState();
   const [danBalance, setDanBalance] = useState();
   const [displayedUserAccount, setDisplayedUserAccount] = useState();
-  const faucetAmount = 100;
+  const faucetAmount = 10000;
 
   async function requestAccount() {
     await window.ethereum.request({ method: "eth_requestAccounts" });
