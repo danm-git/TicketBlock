@@ -9,13 +9,12 @@ import SearchBack from "./resources/vid3.mp4";
 import VendorBack from "./resources/vid4.mp4";
 import AboutBack from "./resources/vid2.mp4";
 import DanFaucetBack from "./resources/vid7.mp4";
-import DatePicker from "react-datepicker";
 
 const danWalletAddress = "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199";
 
 const contractAddress = "0xAB41A0D8B85d88518C672a451032a69d95043aB8";
 const danTokenAddress = "0x99f8948338feB84A2b61686D9B081A9951E7FC60";
-const nftTokenAddress = "0x114CE40589BFc609E4FB42A84c63Bdf2bBE5793e";
+// const nftTokenAddress = "0x114CE40589BFc609E4FB42A84c63Bdf2bBE5793e";
 
 function App() {
   const [userAccount, setUserAccount] = useState();
@@ -213,7 +212,7 @@ function App() {
   }
 
   function Home() {
-    const [startDate, setStartDate] = useState(new Date());
+    // const [startDate, setStartDate] = useState(new Date());
     return (
       <div>
         <video id="vid" className="background videoTag" autoPlay loop muted>
