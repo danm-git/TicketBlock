@@ -14,7 +14,7 @@ const danWalletAddress = "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199";
 
 const contractAddress = "0xAB41A0D8B85d88518C672a451032a69d95043aB8";
 const danTokenAddress = "0x99f8948338feB84A2b61686D9B081A9951E7FC60";
-const nftTokenAddress = "0x114CE40589BFc609E4FB42A84c63Bdf2bBE5793e";
+// const nftTokenAddress = "0x114CE40589BFc609E4FB42A84c63Bdf2bBE5793e";
 
 function App() {
   const [userAccount, setUserAccount] = useState();
