@@ -189,7 +189,14 @@ body {
 
 .genInput {
   height: 30px;
-  width: 390px;
+  width: 400px;
+  font-size: 16px;
+  font-weight: bolder;
+}
+
+.mintNewToken {
+  height: 30px;
+  width: 400px;
   font-size: 16px;
   font-weight: bolder;
 }

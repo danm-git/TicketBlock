@@ -3,6 +3,7 @@ import { useState } from "react";
 import { ethers } from "ethers";
 import Token from "./artifacts/contracts/Token.sol/Token.json";
 import DanToken from "./artifacts/contracts/DanToken.sol/DanToken.json";
+import NFToken from "./artifacts/contracts/NFTicket.sol/NFTicket.json";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import WelcomeBackground from "./resources/vid1.mp4";
 import SearchBack from "./resources/vid3.mp4";
@@ -11,9 +12,12 @@ import AboutBack from "./resources/vid2.mp4";
 import DanFaucetBack from "./resources/vid7.mp4";
 import DatePicker from "react-datepicker";
 
+const danWalletAddress = "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199";
+
+const contractAddress = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
 const ethTokenAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 const danTokenAddress = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
-const danWalletAddress = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
+const nftTokenAddress = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
 
 function App() {
   const [userAccount, setUserAccount] = useState();
@@ -52,7 +56,7 @@ function App() {
       const balance = await contract.balanceOf(account);
       console.log("Balance: ", balance.toString());
       setEthBalance(balance);
-      setUserAccount(account);
+      //setUserAccount(account);
     }
   }
 
@@ -68,7 +72,7 @@ function App() {
       const danBalance = await contract.balanceOf(account);
       console.log("DAN Balance: ", danBalance.toString());
       setDanBalance(danBalance);
-      setUserAccount(account);
+      //setUserAccount(account);
     }
   }
 
@@ -109,6 +113,42 @@ function App() {
     }
   }
 
+  async function generateEventToken() {
+    if (typeof window.ethereum !== "undefined") {
+      await requestAccount();
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(
+        contractAddress,
+        NFToken.abi,
+        signer
+      );
+
+      let account = getActiveAccount();
+      console.log("Active Account:", account);
+      var eventName = "My Event";
+      var venueName = "My Venue";
+      var eventDescription = "My Event Description";
+      var numberOfTickets = 1000;
+      var eventDate = "Event Date";
+
+      try {
+        var uniqueId = contract.mintNFT(
+          eventName,
+          venueName,
+          eventDescription,
+          numberOfTickets,
+          eventDate,
+          account
+        );
+
+        console.log("Minted an Event:", uniqueId + " For: " + account);
+      } catch (error) {
+        console.log("Error Minting Event:", error);
+      }
+    }
+  }
+
   async function clearPage() {
     setUserAccount("");
     setEthBalance("");
@@ -122,19 +162,19 @@ function App() {
         <div>
           <Switch>
             <Route exact path="/">
-              <Home />
+              <AccountInfo />
             </Route>
             <Route path="/AccountInfo">
               <AccountInfo />
+            </Route>
+            <Route path="/DanTokens">
+              <DanTokens />
             </Route>
             <Route path="/vendor">
               <Vendor />
             </Route>
             <Route path="/about">
               <About />
-            </Route>
-            <Route path="/DanTokens">
-              <DanTokens />
             </Route>
           </Switch>
           <HeaderLinks />
@@ -147,20 +187,20 @@ function App() {
     return (
       <div class="headerLinks">
         <div class="no-bullets overlay headLinks headerLinks">
-          <span>
+          {/* <span>
             <Link to="/">Home</Link>
-          </span>
+          </span> */}
           <span>
             <Link to="/AccountInfo">Account Info</Link>
+          </span>
+          <span>
+            <Link to="/DanTokens">Dan Token Faucet</Link>
           </span>
           <span>
             <Link to="/vendor">Add Event</Link>
           </span>
           <span>
             <Link to="/about">About</Link>
-          </span>
-          <span>
-            <Link to="/DanTokens">Dan Token Faucet</Link>
           </span>
         </div>
 
@@ -283,6 +323,19 @@ function App() {
         </video>
         <div class="overlay WelcomeMsg">
           <h2>Vendor</h2>
+          <input
+            id="mintNewToken"
+            type="text"
+            class="mintNewToken"
+            name="mintNewToken"
+            placeholder="Please enter your account number..."
+            onChange={(e) => setUserAccount(e.target.value)}
+            value={userAccount}
+          />
+          {/* <button onClick={accountInfoSearch}>Search</button> */}
+          <br />
+
+          <button onClick={generateEventToken}>Generate new event!</button>
         </div>
       </div>
     );
