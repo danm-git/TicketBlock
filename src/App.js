@@ -11,8 +11,6 @@ import AboutBack from "./resources/vid2.mp4";
 import DanFaucetBack from "./resources/vid7.mp4";
 import DatePicker from "react-datepicker";
 
-// const Web3 = require("web3");
-
 const danWalletAddress = "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199";
 
 const contractAddress = "0xAB41A0D8B85d88518C672a451032a69d95043aB8";
