@@ -52,5 +52,9 @@
     "ethereum-waffle": "^3.4.0",
     "hardhat": "^2.6.1",
     "react-router-dom": "^5.2.1"
+  },
+  "engines": {
+    "node": "14.17.1",
+    "npm": "7.19.1"
   }
 }
