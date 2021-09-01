@@ -4,11 +4,6 @@ import { ethers } from "ethers";
 import DanToken from "./artifacts/contracts/DanToken.sol/DanToken.json";
 import NFToken from "./artifacts/contracts/NFTicket.sol/NFTicket.json";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import WelcomeBackground from "./resources/vid1.mp4";
-import SearchBack from "./resources/vid3.mp4";
-import VendorBack from "./resources/vid4.mp4";
-import AboutBack from "./resources/vid2.mp4";
-import DanFaucetBack from "./resources/vid7.mp4";
 
 const danWalletAddress = "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199";
 
@@ -216,7 +211,10 @@ function App() {
     return (
       <div>
         <video id="vid" className="background videoTag" autoPlay loop muted>
-          <source src={WelcomeBackground} type="video/mp4" />
+          <source
+            src="https://resource-web.s3.us-east-2.amazonaws.com/vid1.mp4"
+            type="video/mp4"
+          />
         </video>
         <div className="overlay WelcomeMsg">
           <h2>
@@ -255,7 +253,10 @@ function App() {
     return (
       <div>
         <video className="background videoTag" autoPlay loop muted>
-          <source src={SearchBack} type="video/mp4" />
+          <source
+            src="https://resource-web.s3.us-east-2.amazonaws.com/vid3.mp4"
+            type="video/mp4"
+          />
         </video>
         <div className="overlay WelcomeMsg">
           <h2>Account Information</h2>
@@ -321,7 +322,10 @@ function App() {
     return (
       <div>
         <video className="background videoTag" autoPlay loop muted>
-          <source src={VendorBack} type="video/mp4" />
+          <source
+            src="https://resource-web.s3.us-east-2.amazonaws.com/vid4.mp4"
+            type="video/mp4"
+          />
         </video>
         <div className="overlay WelcomeMsg">
           <h2>Vendor</h2>
@@ -347,7 +351,10 @@ function App() {
     return (
       <div>
         <video className="background videoTag" autoPlay loop muted>
-          <source src={AboutBack} type="video/mp4" />
+          <source
+            src="https://resource-web.s3.us-east-2.amazonaws.com/vid2.mp4"
+            type="video/mp4"
+          />
         </video>
         <div className="overlay WelcomeMsg">
           <h2>About</h2>
@@ -360,7 +367,10 @@ function App() {
     return (
       <div>
         <video className="background videoTag" autoPlay loop muted>
-          <source src={DanFaucetBack} type="video/mp4" />
+          <source
+            src="https://resource-web.s3.us-east-2.amazonaws.com/vid7.mp4"
+            type="video/mp4"
+          />
         </video>
         {/* <form> */}
         <div className="overlay WelcomeMsg">
