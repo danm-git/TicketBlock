@@ -125,6 +125,22 @@ body {
   border: solid black 8px;
 }
 
+.vendorTable {
+  position: absolute;
+  margin-top: 5%;
+  margin-left: 30%;
+  color: black;
+  text-align: center;
+  font-size: 30px;
+  width: 40%;
+  height: 40%;
+  min-width: 420px;
+  min-height: 420px;
+  z-index: 2147483647;
+  background-color: white;
+  border: solid black 8px;
+}
+
 .background {
   z-index: 1;
   position: fixed;
@@ -310,4 +326,8 @@ body {
 .balanceText {
   font-size: 22px;
   padding: 6px;
+}
+
+.explainText {
+  font-size: 16px;
 }

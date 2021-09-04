@@ -317,12 +317,16 @@ function App() {
     return (
       <div>
         <div class="vendor-bg"></div>
-        <div className="overlay WelcomeMsg">
-          <h2>Vendor</h2>
+        <div className="vendorTable">
+          <h2>Vendor (UC)</h2>
+          <p class="explainText">
+            This will generate a new NFTicket Token. This is the beginning of a
+            Smart ticketing option.{" "}
+          </p>
           <input
             id="mintNewToken"
             type="text"
-            className="mintNewToken"
+            className="mintNewToken b-border"
             name="mintNewToken"
             placeholder="Please enter your account number..."
             onChange={(e) => setUserAccount(e.target.value)}
@@ -375,7 +379,7 @@ function App() {
           <br />
           {/* </div> */}
           <br />
-          <label id="acctNumLabel">Account #</label>
+          <label id="acctNumLabel">Account # (Entered above)</label>
           <br />
           <input
             className="genInput b-border"
