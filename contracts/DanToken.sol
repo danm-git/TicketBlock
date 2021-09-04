@@ -9,6 +9,6 @@ contract DanToken is ERC20 {
     }
 
     function faucet (address recipient , uint amount) external {
-      _mint(recipient, amount);
+      _mint(recipient, amount * (10 ** 18));
     }
 }

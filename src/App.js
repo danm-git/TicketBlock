@@ -8,15 +8,15 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 const danWalletAddress = "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199";
 
 const contractAddress = "0xAB41A0D8B85d88518C672a451032a69d95043aB8";
-const danTokenAddress = "0x99f8948338feB84A2b61686D9B081A9951E7FC60";
-const nftTokenAddress = "0x114CE40589BFc609E4FB42A84c63Bdf2bBE5793e";
+const danTokenAddress = "0x728d3748444c9e2Cc9a55a3eFAAd87f1c5C43295";
+// const nftTokenAddress = "0x812b1747B7573f0429Fb49c3eceaE3f3A3b5AFe8";
 
 function App() {
   const [userAccount, setUserAccount] = useState();
   const [ethBalance, setEthBalance] = useState();
   const [danBalance, setDanBalance] = useState();
   const [displayedUserAccount, setDisplayedUserAccount] = useState();
-  const faucetAmount = 10000;
+  const faucetAmount = 50;
 
   async function requestAccount() {
     await window.ethereum.request({ method: "eth_requestAccounts" });
@@ -103,7 +103,7 @@ function App() {
       );
 
       let account = getActiveAccount();
-      contract.faucet(account, 100);
+      contract.faucet(account, faucetAmount);
       console.log(
         `1: ${faucetAmount} Coins successfully sent to ${userAccount}`
       );
@@ -252,14 +252,11 @@ function App() {
   function AccountInfo() {
     return (
       <div>
-        <video className="background videoTag" autoPlay loop muted>
-          <source
-            src="https://resource-web.s3.us-east-2.amazonaws.com/vid3.mp4"
-            type="video/mp4"
-          />
-        </video>
+        <div class="accountinfo-bg"></div>
         <div className="overlay WelcomeMsg">
           <h2>Account Information</h2>
+        </div>
+        <div className="danFaucetInfoTable">
           <input
             id="sendTokenAddress"
             type="text"
@@ -271,10 +268,10 @@ function App() {
           />
           <button onClick={accountInfoSearch}>Search</button>
           <br />
-        </div>
-        <div className="danFaucetInfoTable">
           <br />
-          <label id="acctNumLabel">Display Account:</label>
+          <label id="acctNumLabel" class="minPad">
+            Display Account:
+          </label>
           <input
             className="genInput"
             disabled
@@ -282,12 +279,14 @@ function App() {
             value={displayedUserAccount}
             onChange={(e) => {
               this.value = displayedUserAccount;
-              this.accountInfoSearch();
+              accountInfoSearch();
             }}
             placeholder="Account ID"
           />{" "}
           <br />
-          <label id="currBalance">ETH Balance:</label>
+          <label id="currBalance" class="morePad">
+            ETH Balance:
+          </label>
           <input
             className="genInput"
             disabled
@@ -299,7 +298,9 @@ function App() {
             placeholder="Current ETH Balance"
           />
           <br />
-          <label id="currBalance">DAN Balance:</label>
+          <label id="currBalance" class="morePad">
+            DAN Balance:
+          </label>
           <input
             className="genInput"
             disabled
@@ -384,6 +385,7 @@ function App() {
             onChange={(e) => setUserAccount(e.target.value)}
             value={userAccount}
           />
+          <button onClick={accountInfoSearch}>Check Balances</button>
           <button onClick={danTokenFaucet}>Send Me Dan!</button>
           <br />
         </div>
