@@ -248,7 +248,7 @@ function App() {
     return (
       <div>
         <div class="accountinfo-bg"></div>
-        <div className="danFaucetInfoTable">
+        <div className="accountInfoTable">
           <h2>Account Information</h2>
           <input
             id="sendTokenAddress"
@@ -357,27 +357,28 @@ function App() {
     return (
       <div>
         <div class="dantok-bg"></div>
-        {/* <form> */}
-        <div className="overlay WelcomeMsg">
+        <div className="danFaucetInfoTable">
+          {/* <div className="overlay WelcomeMsg"> */}
           <h2>Dan Token Faucet</h2>
           <input
             id="sendTokenAddress"
             type="text"
-            className="accountNumber"
+            className="accountNumber b-border"
             name="accountNumber"
             placeholder="Please enter your account number..."
             onChange={(e) => setUserAccount(e.target.value)}
             value={userAccount}
           />
+          <br />
           <button onClick={accountInfoSearch}>Check Balances</button>
           <button onClick={danTokenFaucet}>Send Me Dan!</button>
           <br />
-        </div>
-        <div className="danFaucetInfoTable">
+          {/* </div> */}
           <br />
-          <label id="acctNumLabel">Account #:</label>
+          <label id="acctNumLabel">Account #</label>
+          <br />
           <input
-            className="genInput"
+            className="genInput b-border"
             disabled
             size="40"
             value={userAccount}
@@ -385,12 +386,15 @@ function App() {
               this.setuserAccount(e.target.value);
               this.value = userAccount;
             }}
-            placeholder="Account ID"
+            placeholder="Enter Account Above"
           />{" "}
           <br />
-          <label id="currBalance">ETH Balance:</label>
+          <br />
+          <label class="balanceText" id="currBalance">
+            ETH Balance:
+          </label>
           <input
-            className="genInput"
+            className="genInput b-border"
             disabled
             value={ethBalance}
             onChange={(e) => {
@@ -401,9 +405,11 @@ function App() {
           />
           <button onClick={getEthBalance}>Get ETH Balance</button>
           <br />
-          <label id="currBalance">DAN Balance:</label>
+          <label class="balanceText" id="currBalance">
+            DAN Balance:
+          </label>
           <input
-            className="genInput"
+            className="genInput b-border"
             disabled
             value={danBalance}
             onChange={(e) => {
@@ -417,7 +423,6 @@ function App() {
           <br />
           <button onClick={clearPage}>Clear Page</button>
         </div>
-        {/* </form> */}
       </div>
     );
   }
