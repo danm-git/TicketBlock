@@ -78,24 +78,9 @@ body {
   z-index: 2147483647;
 }
 
-.accountInfoTable {
-  position: absolute;
-  /* top: 0px; */
-  margin-top: 15%;
-  margin-left: 33%;
-  color: #fff;
-  text-align: center;
-  font-size: 30px;
-  /* background-color: rgba(221, 221, 221, 0.3); */
-  width: 640px;
-  height: 700px;
-  /* padding: 10px 0; */
-  z-index: 2147483647;
-}
-
 .danFaucetInfoTable {
   position: absolute;
-  margin-top: 5%;
+  margin-top: 3%;
   margin-left: 30%;
   color: black;
   text-align: center;
@@ -111,7 +96,7 @@ body {
 
 .accountInfoTable {
   position: absolute;
-  margin-top: 5%;
+  margin-top: 3%;
   margin-left: 30%;
   color: black;
   text-align: center;
