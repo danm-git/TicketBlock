@@ -210,12 +210,7 @@ function App() {
     // const [startDate, setStartDate] = useState(new Date());
     return (
       <div>
-        <video id="vid" className="background videoTag" autoPlay loop muted>
-          <source
-            src="https://resource-web.s3.us-east-2.amazonaws.com/vid1.mp4"
-            type="video/mp4"
-          />
-        </video>
+        <div class="home-bg"></div>
         <div className="overlay WelcomeMsg">
           <h2>
             Welcome To TicketBlock. <br />
@@ -253,19 +248,18 @@ function App() {
     return (
       <div>
         <div class="accountinfo-bg"></div>
-        <div className="overlay WelcomeMsg">
-          <h2>Account Information</h2>
-        </div>
         <div className="danFaucetInfoTable">
+          <h2>Account Information</h2>
           <input
             id="sendTokenAddress"
             type="text"
-            className="accountNumber"
+            className="accountNumber b-border"
             name="accountNumber"
             placeholder="Please enter your account number..."
             onChange={(e) => setUserAccount(e.target.value)}
             value={userAccount}
           />
+          <br />
           <button onClick={accountInfoSearch}>Search</button>
           <br />
           <br />
@@ -273,7 +267,7 @@ function App() {
             Display Account:
           </label>
           <input
-            className="genInput"
+            className="genInput b-border"
             disabled
             size="40"
             value={displayedUserAccount}
@@ -288,7 +282,7 @@ function App() {
             ETH Balance:
           </label>
           <input
-            className="genInput"
+            className="genInput b-border"
             disabled
             value={ethBalance}
             onChange={(e) => {
@@ -302,7 +296,7 @@ function App() {
             DAN Balance:
           </label>
           <input
-            className="genInput"
+            className="genInput b-border"
             disabled
             value={danBalance}
             onChange={(e) => {
@@ -322,12 +316,7 @@ function App() {
   function Vendor() {
     return (
       <div>
-        <video className="background videoTag" autoPlay loop muted>
-          <source
-            src="https://resource-web.s3.us-east-2.amazonaws.com/vid4.mp4"
-            type="video/mp4"
-          />
-        </video>
+        <div class="vendor-bg"></div>
         <div className="overlay WelcomeMsg">
           <h2>Vendor</h2>
           <input
@@ -367,12 +356,7 @@ function App() {
   function DanTokens() {
     return (
       <div>
-        <video className="background videoTag" autoPlay loop muted>
-          <source
-            src="https://resource-web.s3.us-east-2.amazonaws.com/vid7.mp4"
-            type="video/mp4"
-          />
-        </video>
+        <div class="dantok-bg"></div>
         {/* <form> */}
         <div className="overlay WelcomeMsg">
           <h2>Dan Token Faucet</h2>
