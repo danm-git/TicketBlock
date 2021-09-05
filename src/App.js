@@ -3,6 +3,7 @@ import { useState } from "react";
 import { ethers } from "ethers";
 import DanToken from "./artifacts/contracts/DanToken.sol/DanToken.json";
 import NFToken from "./artifacts/contracts/NFTicket.sol/NFTicket.json";
+import Token from "./artifacts/contracts/Token.sol/Token.json";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 const danWalletAddress = "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199";
@@ -16,6 +17,10 @@ function App() {
   const [ethBalance, setEthBalance] = useState();
   const [danBalance, setDanBalance] = useState();
   const [displayedUserAccount, setDisplayedUserAccount] = useState();
+  const [sendAmount, setSendAmount] = useState();
+  const [receiverAddress, setReceiverAddress] = useState();
+  const [senderAddress, setSenderAddress] = useState();
+
   const faucetAmount = 50;
 
   async function requestAccount() {
@@ -73,17 +78,21 @@ function App() {
     }
   }
 
-  // async function sendCoins() {
-  //   if (typeof window.ethereum !== "undefined") {
-  //     await requestAccount();
-  //     const provider = new ethers.providers.Web3Provider(window.ethereum);
-  //     const signer = provider.getSigner();
-  //     const contract = new ethers.Contract(ethTokenAddress, Token.abi, signer);
-  //     const transaction = await contract.transfer(userAccount, faucetAmount);
-  //     await transaction.wait();
-  //     console.log(`${faucetAmount} Coins successfully sent to ${userAccount}`);
-  //   }
-  // }
+  async function sendCoins() {
+    if (typeof window.ethereum !== "undefined") {
+      // var sender = "0xAB41A0D8B85d88518C672a451032a69d95043aB8";
+      // var receiver = "0xfCA8c05f5A09b1094E8885a79E80B618E0e8536b";
+      var amount = 1;
+
+      await requestAccount();
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(contractAddress, Token.abi, signer);
+      const transaction = await contract.transfer(receiverAddress, amount);
+      await transaction.wait();
+      console.log(`${amount} Coins successfully sent to ${receiverAddress}`);
+    }
+  }
 
   async function accountInfoSearch() {
     setDisplayedUserAccount(getActiveAccount());
@@ -151,6 +160,9 @@ function App() {
     setEthBalance("");
     setDisplayedUserAccount("");
     setDanBalance("");
+    setSendAmount("");
+    setReceiverAddress("");
+    setSenderAddress("");
   }
 
   return (
@@ -163,6 +175,9 @@ function App() {
             </Route>
             <Route path="/AccountInfo">
               <AccountInfo />
+            </Route>
+            <Route path="/TransferTokens">
+              <TransferTokens />
             </Route>
             <Route path="/DanTokens">
               <DanTokens />
@@ -189,6 +204,9 @@ function App() {
           </span> */}
           <span>
             <Link to="/AccountInfo">Account Info</Link>
+          </span>
+          <span>
+            <Link to="/TransferTokens">Transfer Tokens</Link>
           </span>
           <span>
             <Link to="/DanTokens">Dan Token Faucet</Link>
@@ -307,6 +325,120 @@ function App() {
           />
           <br />
           <br />
+          <button onClick={clearPage}>Clear Page</button>
+        </div>
+      </div>
+    );
+  }
+
+  function TransferTokens() {
+    return (
+      <div>
+        <div class="transfertoken-bg"></div>
+        <div className="accountInfoTable">
+          <h2>Transfer ETH Tokens</h2>
+          <div class="fromSection">
+            <h3 class="sectionTitle">TO ADDRESS</h3>
+            {/* <p>Ensure you are logged into the Meta Mask sender wallet.</p> */}
+            <div class="fromAcctNum">
+              <br />
+              <label id="acctNumLabel" for="sendTokenAddress" class="minPad">
+                Account:
+              </label>
+              <input
+                id="sendTokenAddress"
+                type="text"
+                className="accountNumber b-border"
+                name="accountNumber"
+                placeholder="Please enter the RECEIVER address..."
+                onChange={(e) => setReceiverAddress(e.target.value)}
+                value={receiverAddress}
+              />
+            </div>
+            <div class="fromAcctNum">
+              <label
+                id="amountLabel"
+                for="sendTokenAddress"
+                class="amountLabel"
+              >
+                Amount:
+              </label>
+              <input
+                id="amountToSend"
+                type="number"
+                // step="0.01"
+                maxLength="8"
+                className="amountToSend b-border"
+                name="amount"
+                placeholder="$0.00"
+                // onChange={(e) => setSendAmount(e.target.value)}
+                value={sendAmount}
+              />
+            </div>
+          </div>
+          <br />
+          {/* <div class="toSection">
+            <h3 class="sectionTitle">TO</h3>
+            <div class="toAcctNum">
+              <br />
+              <label id="acctNumLabel" for="toTokenAddress" class="minPad">
+                Account:
+              </label>
+              <input
+                id="toTokenAddress"
+                type="text"
+                className="accountNumber b-border"
+                name="accountNumber"
+                placeholder="Please enter the TO account number..."
+                onChange={(e) => setReceiverAddress(e.target.value)}
+                value={receiverAddress}
+              />
+            </div>
+          </div> */}
+          {/* <br /> */}
+          {/* <label id="acctNumLabel" class="minPad">
+            Display Account:
+          </label>
+          <input
+            className="genInput b-border"
+            disabled
+            size="40"
+            value={displayedUserAccount}
+            onChange={(e) => {
+              this.value = displayedUserAccount;
+              accountInfoSearch();
+            }}
+            placeholder="Account ID"
+          />{" "}
+          <br />
+          <label id="currBalance" class="morePad">
+            ETH Balance:
+          </label>
+          <input
+            className="genInput b-border"
+            disabled
+            value={ethBalance}
+            onChange={(e) => {
+              this.setEthBalance(e.target.value);
+              this.value = ethBalance;
+            }}
+            placeholder="Current ETH Balance"
+          />
+          <br />
+          <label id="currBalance" class="morePad">
+            DAN Balance:
+          </label>
+          <input
+            className="genInput b-border"
+            disabled
+            value={danBalance}
+            onChange={(e) => {
+              this.setDanBalance(e.target.value);
+              this.value = danBalance;
+            }}
+            placeholder="Current Dan Balance"
+          /> */}
+          <button onClick={sendCoins}>Send Now!</button>
           <button onClick={clearPage}>Clear Page</button>
         </div>
       </div>
