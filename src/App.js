@@ -11,6 +11,7 @@ const danWalletAddress = "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199";
 const contractAddress = "0xAB41A0D8B85d88518C672a451032a69d95043aB8";
 const danTokenAddress = "0x728d3748444c9e2Cc9a55a3eFAAd87f1c5C43295";
 // const nftTokenAddress = "0x812b1747B7573f0429Fb49c3eceaE3f3A3b5AFe8";
+const privateKey = "0xAB41A0D8B85d88518C672a451032a69d95043aB8";
 
 function App() {
   const [userAccount, setUserAccount] = useState();
@@ -20,11 +21,15 @@ function App() {
   const [sendAmount, setSendAmount] = useState();
   const [receiverAddress, setReceiverAddress] = useState();
   const [senderAddress, setSenderAddress] = useState();
+  const [accounts, setAccounts] = useState();
 
   const faucetAmount = 50;
 
   async function requestAccount() {
-    await window.ethereum.request({ method: "eth_requestAccounts" });
+    const accounts = await window.ethereum.request({
+      method: "eth_requestAccounts",
+    });
+    setAccounts(accounts);
   }
 
   function getActiveAccount() {
@@ -91,6 +96,58 @@ function App() {
       const transaction = await contract.transfer(receiverAddress, amount);
       await transaction.wait();
       console.log(`${amount} Coins successfully sent to ${receiverAddress}`);
+    }
+  }
+
+  async function sendToken() {
+    var contract_address = null; //contractAddress;
+    var send_token_amount = "1";
+    console.log(`send_token_amount: ${send_token_amount}`);
+
+    var to_address = receiverAddress;
+    var send_account = userAccount;
+
+    // await requestAccount();
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    let wallet = new ethers.Wallet(privateKey, provider);
+    var walletSigner = provider.getSigner();
+
+    if (contract_address) {
+      // general token send
+      // let contract = new ethers.Contract(
+      //   contract_address,
+      //   DanToken.abi,
+      //   wallet
+      // );
+      // // How many tokens?
+      // let numberOfTokens = 1000;
+      // // numberOfTokens = ethers.utils.parseUnits(send_token_amount, 18);
+      // console.log(`numberOfTokens: ${numberOfTokens}`);
+      // // Send tokens
+      // await contract
+      //   .transfer(to_address, numberOfTokens)
+      //   .then((transferResult) => {
+      //     console.dir(transferResult);
+      //     alert("Tokens request submitted.  Please wait for confirmation...");
+      //   });
+    } // ether send
+    else {
+      const tx = {
+        from: send_account,
+        to: to_address,
+        value: ethers.utils.parseEther(send_token_amount),
+      };
+      console.dir(tx);
+      try {
+        walletSigner.sendTransaction(tx).then((transaction) => {
+          console.dir(transaction);
+          alert(
+            "Send was submitted succesfully!  Please wait for a confirmation..."
+          );
+        });
+      } catch (error) {
+        alert("failed to send!!");
+      }
     }
   }
 
@@ -438,7 +495,7 @@ function App() {
             }}
             placeholder="Current Dan Balance"
           /> */}
-          <button onClick={sendCoins}>Send Now!</button>
+          <button onClick={sendToken}>Send Now!</button>
           <button onClick={clearPage}>Clear Page</button>
         </div>
       </div>
