@@ -110,6 +110,32 @@ body {
   border: solid black 8px;
 }
 
+.aboutTable {
+  position: absolute;
+  margin-top: 3%;
+  margin-left: 30%;
+  color: black;
+  text-align: center;
+  font-size: 30px;
+  width: 40%;
+  height: 40%;
+  min-width: 420px;
+  min-height: 700px;
+  z-index: 2147483647;
+  background-color: white;
+  border: solid black 8px;
+}
+
+.aboutText {
+  font-size: 22px;
+}
+
+.aboutText p {
+  font-size: 22px;
+  padding-left: 5%;
+  margin-right: 5%;
+}
+
 .vendorTable {
   position: absolute;
   margin-top: 5%;
@@ -316,6 +342,21 @@ body {
   height: 100%;
   background-size: cover;
   background-image: url("./resources/wall6.jpg");
+  overflow: hidden;
+}
+
+.about-bg {
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-image: url("./resources/wall3.jpg");
   overflow: hidden;
 }
 

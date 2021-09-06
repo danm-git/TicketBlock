@@ -531,16 +531,32 @@ function App() {
   }
 
   function About() {
+    const projects = [
+      {
+        proj:
+          "This is where I am building stuff in order to learn blockchain.  Below are some of the ideas I am working on.  Should be something new most days so please stop by and check it out.  Any Questions or comments?  Send them to daniel.e.munto@gmail.com!",
+      },
+      { proj: "DAN Token and faucet" },
+      { proj: "Transfer ETH between my accounts" },
+      { proj: "Account Lookup Page" },
+      { proj: "NFTicket - A Smart contract ticketing system" },
+      { proj: "ChainLink - Link Token balance check and creating an Oracle" },
+      {
+        proj:
+          "A Lotto NFTicket where you can get different odds on prizes.  Loot box meets lotto ticket.",
+      },
+    ];
+
     return (
       <div>
-        <video className="background videoTag" autoPlay loop muted>
-          <source
-            src="https://resource-web.s3.us-east-2.amazonaws.com/vid2.mp4"
-            type="video/mp4"
-          />
-        </video>
-        <div className="overlay WelcomeMsg">
+        <div class="about-bg"></div>
+        <div className="aboutTable">
           <h2>About</h2>
+          <div className="aboutText">
+            {projects.map((project) => (
+              <p>{project.proj}</p>
+            ))}
+          </div>
         </div>
       </div>
     );
