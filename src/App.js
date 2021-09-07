@@ -87,7 +87,7 @@ function App() {
     if (typeof window.ethereum !== "undefined") {
       // var sender = "0xAB41A0D8B85d88518C672a451032a69d95043aB8";
       // var receiver = "0xfCA8c05f5A09b1094E8885a79E80B618E0e8536b";
-      var amount = 1;
+      var amount = ethers.utils.parseEther("0.1");
 
       await requestAccount();
       const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -285,7 +285,7 @@ function App() {
     // const [startDate, setStartDate] = useState(new Date());
     return (
       <div>
-        <div class="home-bg"></div>
+        <div className="home-bg"></div>
         <div className="overlay WelcomeMsg">
           <h2>
             Welcome To TicketBlock. <br />
@@ -322,9 +322,9 @@ function App() {
   function AccountInfo() {
     return (
       <div>
-        <div class="accountinfo-bg"></div>
+        <div className="accountinfo-bg"></div>
         <div className="accountInfoTable">
-          <h2>Account Information</h2>
+          <h2>Account Information (Ropsten)</h2>
           <input
             id="sendTokenAddress"
             type="text"
@@ -338,7 +338,7 @@ function App() {
           <button onClick={accountInfoSearch}>Search</button>
           <br />
           <br />
-          <label id="acctNumLabel" class="minPad">
+          <label id="acctNumLabel" className="minPad">
             Display Account:
           </label>
           <input
@@ -353,7 +353,7 @@ function App() {
             placeholder="Account ID"
           />{" "}
           <br />
-          <label id="currBalance" class="morePad">
+          <label id="currBalance" className="morePad">
             ETH Balance:
           </label>
           <input
@@ -367,7 +367,7 @@ function App() {
             placeholder="Current ETH Balance"
           />
           <br />
-          <label id="currBalance" class="morePad">
+          <label id="currBalance" className="morePad">
             DAN Balance:
           </label>
           <input
@@ -391,15 +391,15 @@ function App() {
   function TransferTokens() {
     return (
       <div>
-        <div class="transfertoken-bg"></div>
+        <div className="transfertoken-bg"></div>
         <div className="accountInfoTable">
-          <h2>Transfer ETH Tokens</h2>
-          <div class="fromSection">
-            <h3 class="sectionTitle">TO ADDRESS</h3>
+          <h2>Ropsten ETH Transfer between my accounts</h2>
+          <div className="fromSection">
+            <h3 className="sectionTitle">TO ADDRESS</h3>
             {/* <p>Ensure you are logged into the Meta Mask sender wallet.</p> */}
-            <div class="fromAcctNum">
+            <div className="fromAcctNum">
               <br />
-              <label id="acctNumLabel" for="sendTokenAddress" class="minPad">
+              <label id="acctNumLabel" className="minPad">
                 Account:
               </label>
               <input
@@ -412,12 +412,8 @@ function App() {
                 value={receiverAddress}
               />
             </div>
-            <div class="fromAcctNum">
-              <label
-                id="amountLabel"
-                for="sendTokenAddress"
-                class="amountLabel"
-              >
+            <div className="fromAcctNum">
+              <label id="amountLabel" className="amountLabel">
                 Amount:
               </label>
               <input
@@ -427,9 +423,10 @@ function App() {
                 maxLength="8"
                 className="amountToSend b-border"
                 name="amount"
-                placeholder="$0.00"
+                placeholder=".1"
                 // onChange={(e) => setSendAmount(e.target.value)}
                 value={sendAmount}
+                disabled
               />
             </div>
           </div>
@@ -505,10 +502,10 @@ function App() {
   function Vendor() {
     return (
       <div>
-        <div class="vendor-bg"></div>
+        <div className="vendor-bg"></div>
         <div className="vendorTable">
           <h2>Vendor (UC)</h2>
-          <p class="explainText">
+          <p className="explainText">
             This will generate a new NFTicket Token. This is the beginning of a
             Smart ticketing option.{" "}
           </p>
@@ -549,9 +546,9 @@ function App() {
 
     return (
       <div>
-        <div class="about-bg"></div>
+        <div className="about-bg"></div>
         <div className="aboutTable">
-          <h2>About</h2>
+          <h2>About (Ropsten)</h2>
           <div className="aboutText">
             {projects.map((project) => (
               <p>{project.proj}</p>
@@ -565,10 +562,10 @@ function App() {
   function DanTokens() {
     return (
       <div>
-        <div class="dantok-bg"></div>
+        <div className="dantok-bg"></div>
         <div className="danFaucetInfoTable">
           {/* <div className="overlay WelcomeMsg"> */}
-          <h2>Dan Token Faucet</h2>
+          <h2>Dan Token Faucet (Ropsten)</h2>
           <input
             id="sendTokenAddress"
             type="text"
@@ -599,7 +596,7 @@ function App() {
           />{" "}
           <br />
           <br />
-          <label class="balanceText" id="currBalance">
+          <label className="balanceText" id="currBalance">
             ETH Balance:
           </label>
           <input
@@ -614,7 +611,7 @@ function App() {
           />
           <button onClick={getEthBalance}>Get ETH Balance</button>
           <br />
-          <label class="balanceText" id="currBalance">
+          <label className="balanceText" id="currBalance">
             DAN Balance:
           </label>
           <input
