@@ -3,7 +3,6 @@ import { useState } from "react";
 import { ethers } from "ethers";
 import DanToken from "./artifacts/contracts/DanToken.sol/DanToken.json";
 import NFToken from "./artifacts/contracts/NFTicket.sol/NFTicket.json";
-import Token from "./artifacts/contracts/Token.sol/Token.json";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 const danWalletAddress = "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199";
@@ -11,7 +10,8 @@ const danWalletAddress = "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199";
 const contractAddress = "0xAB41A0D8B85d88518C672a451032a69d95043aB8";
 const danTokenAddress = "0x728d3748444c9e2Cc9a55a3eFAAd87f1c5C43295";
 // const nftTokenAddress = "0x812b1747B7573f0429Fb49c3eceaE3f3A3b5AFe8";
-const privateKey = "0xAB41A0D8B85d88518C672a451032a69d95043aB8";
+const privateKey =
+  "20aaf9f5b3b4e74ad06fd05fbb3dedeab0b9f7f77741c978ec383d5f65137365";
 
 function App() {
   const [userAccount, setUserAccount] = useState();
@@ -20,16 +20,16 @@ function App() {
   const [displayedUserAccount, setDisplayedUserAccount] = useState();
   const [sendAmount, setSendAmount] = useState();
   const [receiverAddress, setReceiverAddress] = useState();
-  const [senderAddress, setSenderAddress] = useState();
-  const [accounts, setAccounts] = useState();
+  // const [senderAddress, setSenderAddress] = useState();
+  // const [accounts, setAccounts] = useState();
 
   const faucetAmount = 50;
 
   async function requestAccount() {
-    const accounts = await window.ethereum.request({
+    await window.ethereum.request({
       method: "eth_requestAccounts",
     });
-    setAccounts(accounts);
+    //setAccounts(accounts);
   }
 
   function getActiveAccount() {
@@ -83,71 +83,31 @@ function App() {
     }
   }
 
-  async function sendCoins() {
+  async function transferEth() {
     if (typeof window.ethereum !== "undefined") {
-      // var sender = "0xAB41A0D8B85d88518C672a451032a69d95043aB8";
-      // var receiver = "0xfCA8c05f5A09b1094E8885a79E80B618E0e8536b";
-      var amount = 1;
+      var amountInEther = "0.1";
 
       await requestAccount();
       const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
-      const contract = new ethers.Contract(contractAddress, Token.abi, signer);
-      const transaction = await contract.transfer(receiverAddress, amount);
-      await transaction.wait();
-      console.log(`${amount} Coins successfully sent to ${receiverAddress}`);
-    }
-  }
+      let wallet = new ethers.Wallet(privateKey, provider);
 
-  async function sendToken() {
-    var contract_address = null; //contractAddress;
-    var send_token_amount = "1";
-    console.log(`send_token_amount: ${send_token_amount}`);
-
-    var to_address = receiverAddress;
-    var send_account = userAccount;
-
-    // await requestAccount();
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    let wallet = new ethers.Wallet(privateKey, provider);
-    var walletSigner = provider.getSigner();
-
-    if (contract_address) {
-      // general token send
-      // let contract = new ethers.Contract(
-      //   contract_address,
-      //   DanToken.abi,
-      //   wallet
-      // );
-      // // How many tokens?
-      // let numberOfTokens = 1000;
-      // // numberOfTokens = ethers.utils.parseUnits(send_token_amount, 18);
-      // console.log(`numberOfTokens: ${numberOfTokens}`);
-      // // Send tokens
-      // await contract
-      //   .transfer(to_address, numberOfTokens)
-      //   .then((transferResult) => {
-      //     console.dir(transferResult);
-      //     alert("Tokens request submitted.  Please wait for confirmation...");
-      //   });
-    } // ether send
-    else {
-      const tx = {
-        from: send_account,
-        to: to_address,
-        value: ethers.utils.parseEther(send_token_amount),
+      let tx = {
+        to: receiverAddress,
+        // Convert currency unit from ether to wei
+        value: ethers.utils.parseEther(amountInEther),
       };
-      console.dir(tx);
-      try {
-        walletSigner.sendTransaction(tx).then((transaction) => {
-          console.dir(transaction);
-          alert(
-            "Send was submitted succesfully!  Please wait for a confirmation..."
-          );
-        });
-      } catch (error) {
-        alert("failed to send!!");
-      }
+
+      wallet.sendTransaction(tx).then((txObj) => {
+        console.log("txHash", txObj.hash);
+      });
+
+      // const signer = provider.getSigner();
+      // const contract = new ethers.Contract(contractAddress, Token.abi, signer);
+      // const transaction = await contract.transfer(receiverAddress, amount);
+      // await transaction.wait();
+      console.log(
+        `${amountInEther} Coins successfully sent to ${receiverAddress}`
+      );
     }
   }
 
@@ -219,7 +179,7 @@ function App() {
     setDanBalance("");
     setSendAmount("");
     setReceiverAddress("");
-    setSenderAddress("");
+    // setSenderAddress("");
   }
 
   return (
@@ -233,14 +193,14 @@ function App() {
             <Route path="/AccountInfo">
               <AccountInfo />
             </Route>
-            <Route path="/TransferTokens">
-              <TransferTokens />
-            </Route>
             <Route path="/DanTokens">
               <DanTokens />
             </Route>
             <Route path="/vendor">
               <Vendor />
+            </Route>
+            <Route path="/TransferTokens">
+              <TransferTokens />
             </Route>
             <Route path="/about">
               <About />
@@ -263,13 +223,13 @@ function App() {
             <Link to="/AccountInfo">Account Info</Link>
           </span>
           <span>
-            <Link to="/TransferTokens">Transfer Tokens</Link>
-          </span>
-          <span>
             <Link to="/DanTokens">Dan Token Faucet</Link>
           </span>
           <span>
             <Link to="/vendor">Add Event</Link>
+          </span>
+          <span>
+            <Link to="/TransferTokens">Transfer Tokens</Link>
           </span>
           <span>
             <Link to="/about">About</Link>
@@ -281,11 +241,11 @@ function App() {
     );
   }
 
-  function Home() {
+  /*function Home() {
     // const [startDate, setStartDate] = useState(new Date());
     return (
       <div>
-        <div class="home-bg"></div>
+        <div className="home-bg"></div>
         <div className="overlay WelcomeMsg">
           <h2>
             Welcome To TicketBlock. <br />
@@ -300,10 +260,6 @@ function App() {
               name="city"
               placeholder="City or Zip"
             />
-            {/* <DatePicker
-              selected={startDate}
-              onChange={(date) => setStartDate(date)}
-            /> */}
             <input
               type="text"
               className="searchTerm"
@@ -317,14 +273,14 @@ function App() {
         </div>
       </div>
     );
-  }
+  }*/
 
   function AccountInfo() {
     return (
       <div>
-        <div class="accountinfo-bg"></div>
+        <div className="accountinfo-bg"></div>
         <div className="accountInfoTable">
-          <h2>Account Information</h2>
+          <h2>Account Information (Ropsten)</h2>
           <input
             id="sendTokenAddress"
             type="text"
@@ -338,7 +294,7 @@ function App() {
           <button onClick={accountInfoSearch}>Search</button>
           <br />
           <br />
-          <label id="acctNumLabel" class="minPad">
+          <label id="acctNumLabel" className="minPad">
             Display Account:
           </label>
           <input
@@ -353,7 +309,7 @@ function App() {
             placeholder="Account ID"
           />{" "}
           <br />
-          <label id="currBalance" class="morePad">
+          <label id="currBalance" className="morePad">
             ETH Balance:
           </label>
           <input
@@ -367,7 +323,7 @@ function App() {
             placeholder="Current ETH Balance"
           />
           <br />
-          <label id="currBalance" class="morePad">
+          <label id="currBalance" className="morePad">
             DAN Balance:
           </label>
           <input
@@ -391,15 +347,15 @@ function App() {
   function TransferTokens() {
     return (
       <div>
-        <div class="transfertoken-bg"></div>
+        <div className="transfertoken-bg"></div>
         <div className="accountInfoTable">
-          <h2>Transfer ETH Tokens</h2>
-          <div class="fromSection">
-            <h3 class="sectionTitle">TO ADDRESS</h3>
+          <h2>Ropsten ETH Transfer</h2>
+          <div className="fromSection">
+            <h3 className="sectionTitle">TO ADDRESS</h3>
             {/* <p>Ensure you are logged into the Meta Mask sender wallet.</p> */}
-            <div class="fromAcctNum">
+            <div className="fromAcctNum">
               <br />
-              <label id="acctNumLabel" for="sendTokenAddress" class="minPad">
+              <label id="acctNumLabel" className="minPad">
                 Account:
               </label>
               <input
@@ -412,12 +368,8 @@ function App() {
                 value={receiverAddress}
               />
             </div>
-            <div class="fromAcctNum">
-              <label
-                id="amountLabel"
-                for="sendTokenAddress"
-                class="amountLabel"
-              >
+            <div className="fromAcctNum">
+              <label id="amountLabel" className="amountLabel">
                 Amount:
               </label>
               <input
@@ -427,75 +379,15 @@ function App() {
                 maxLength="8"
                 className="amountToSend b-border"
                 name="amount"
-                placeholder="$0.00"
+                placeholder=".1"
                 // onChange={(e) => setSendAmount(e.target.value)}
                 value={sendAmount}
+                disabled
               />
             </div>
           </div>
           <br />
-          {/* <div class="toSection">
-            <h3 class="sectionTitle">TO</h3>
-            <div class="toAcctNum">
-              <br />
-              <label id="acctNumLabel" for="toTokenAddress" class="minPad">
-                Account:
-              </label>
-              <input
-                id="toTokenAddress"
-                type="text"
-                className="accountNumber b-border"
-                name="accountNumber"
-                placeholder="Please enter the TO account number..."
-                onChange={(e) => setReceiverAddress(e.target.value)}
-                value={receiverAddress}
-              />
-            </div>
-          </div> */}
-          {/* <br /> */}
-          {/* <label id="acctNumLabel" class="minPad">
-            Display Account:
-          </label>
-          <input
-            className="genInput b-border"
-            disabled
-            size="40"
-            value={displayedUserAccount}
-            onChange={(e) => {
-              this.value = displayedUserAccount;
-              accountInfoSearch();
-            }}
-            placeholder="Account ID"
-          />{" "}
-          <br />
-          <label id="currBalance" class="morePad">
-            ETH Balance:
-          </label>
-          <input
-            className="genInput b-border"
-            disabled
-            value={ethBalance}
-            onChange={(e) => {
-              this.setEthBalance(e.target.value);
-              this.value = ethBalance;
-            }}
-            placeholder="Current ETH Balance"
-          />
-          <br />
-          <label id="currBalance" class="morePad">
-            DAN Balance:
-          </label>
-          <input
-            className="genInput b-border"
-            disabled
-            value={danBalance}
-            onChange={(e) => {
-              this.setDanBalance(e.target.value);
-              this.value = danBalance;
-            }}
-            placeholder="Current Dan Balance"
-          /> */}
-          <button onClick={sendToken}>Send Now!</button>
+          <button onClick={transferEth}>Send Now!</button>
           <button onClick={clearPage}>Clear Page</button>
         </div>
       </div>
@@ -505,10 +397,10 @@ function App() {
   function Vendor() {
     return (
       <div>
-        <div class="vendor-bg"></div>
+        <div className="vendor-bg"></div>
         <div className="vendorTable">
           <h2>Vendor (UC)</h2>
-          <p class="explainText">
+          <p className="explainText">
             This will generate a new NFTicket Token. This is the beginning of a
             Smart ticketing option.{" "}
           </p>
@@ -549,9 +441,9 @@ function App() {
 
     return (
       <div>
-        <div class="about-bg"></div>
+        <div className="about-bg"></div>
         <div className="aboutTable">
-          <h2>About</h2>
+          <h2>About (Ropsten)</h2>
           <div className="aboutText">
             {projects.map((project) => (
               <p>{project.proj}</p>
@@ -565,10 +457,10 @@ function App() {
   function DanTokens() {
     return (
       <div>
-        <div class="dantok-bg"></div>
+        <div className="dantok-bg"></div>
         <div className="danFaucetInfoTable">
           {/* <div className="overlay WelcomeMsg"> */}
-          <h2>Dan Token Faucet</h2>
+          <h2>Dan Token Faucet (Ropsten)</h2>
           <input
             id="sendTokenAddress"
             type="text"
@@ -599,7 +491,7 @@ function App() {
           />{" "}
           <br />
           <br />
-          <label class="balanceText" id="currBalance">
+          <label className="balanceText" id="currBalance">
             ETH Balance:
           </label>
           <input
@@ -614,7 +506,7 @@ function App() {
           />
           <button onClick={getEthBalance}>Get ETH Balance</button>
           <br />
-          <label class="balanceText" id="currBalance">
+          <label className="balanceText" id="currBalance">
             DAN Balance:
           </label>
           <input
