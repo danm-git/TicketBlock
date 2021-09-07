@@ -86,6 +86,9 @@ function App() {
   async function transferEth() {
     if (typeof window.ethereum !== "undefined") {
       var amountInEther = "0.1";
+      // var sender = "0xAB41A0D8B85d88518C672a451032a69d95043aB8";
+      // var receiver = "0xfCA8c05f5A09b1094E8885a79E80B618E0e8536b";
+      // var amount = ethers.utils.parseEther("0.1");
 
       await requestAccount();
       const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -99,6 +102,7 @@ function App() {
 
       wallet.sendTransaction(tx).then((txObj) => {
         console.log("txHash", txObj.hash);
+        alert(`${amountInEther} Coins successfully sent to ${receiverAddress}`);
       });
 
       // const signer = provider.getSigner();
@@ -226,10 +230,10 @@ function App() {
             <Link to="/DanTokens">Dan Token Faucet</Link>
           </span>
           <span>
-            <Link to="/vendor">Add Event</Link>
+            <Link to="/TransferTokens">Transfer Tokens</Link>
           </span>
           <span>
-            <Link to="/TransferTokens">Transfer Tokens</Link>
+            <Link to="/vendor">Add Event</Link>
           </span>
           <span>
             <Link to="/about">About</Link>
