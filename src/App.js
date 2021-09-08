@@ -436,7 +436,7 @@ function App() {
       { proj: "NFTicket - A Smart contract ticketing system (Ropsten) (UC)" },
       {
         proj:
-          "ChainLink - Link Token balance check and creating an Oracle- Coming Soon...",
+          "ChainLink - Link Token balance check and creating an Oracle - Coming Soon...",
       },
       { proj: "Cardano Hello World - Coming Soon..." },
       { proj: "Polygon Hello World - Coming Soon..." },
