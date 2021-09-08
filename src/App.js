@@ -444,7 +444,7 @@ function App() {
       { proj: "NFTimeCapsule - Coming Soon..." },
       {
         proj:
-          "A Lotto NFTicket where you can get different odds on prizes.  Loot box meets lotto ticket. - Coming Soon...",
+          "A Lotto NFTicket, when purchased, would have the opportunity to win prizes/crypto.  Think Lotto Ticket meets Loot box. - Coming Soon...",
       },
     ];
 
