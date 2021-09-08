@@ -353,7 +353,7 @@ function App() {
       <div>
         <div className="transfertoken-bg"></div>
         <div className="accountInfoTable">
-          <h2>Ropsten ETH Transfer</h2>
+          <h2>ETH Transfer (Ropsten)</h2>
           <div className="fromSection">
             <h3 className="sectionTitle">TO ADDRESS</h3>
             {/* <p>Ensure you are logged into the Meta Mask sender wallet.</p> */}
@@ -428,18 +428,23 @@ function App() {
 
   function About() {
     const projects = [
+      { proj: "DAN Token and faucet (Ropsten)" },
+      { proj: "Account Lookup Page - DAN, ETH (Ropsten)" },
+      { proj: "Transfer ETH between my accounts (Ropsten)" },
+      { proj: "Solana/Rust Project (UC)" },
+      { proj: "GoLang Web3 Project (UC)" },
+      { proj: "NFTicket - A Smart contract ticketing system (Ropsten) (UC)" },
       {
         proj:
-          "This is where I am building stuff in order to learn blockchain.  Below are some of the ideas I am working on.  Should be something new most days so please stop by and check it out.  Any Questions or comments?  Send them to daniel.e.munto@gmail.com!",
+          "ChainLink - Link Token balance check and creating an Oracle- Coming Soon...",
       },
-      { proj: "DAN Token and faucet" },
-      { proj: "Transfer ETH between my accounts" },
-      { proj: "Account Lookup Page" },
-      { proj: "NFTicket - A Smart contract ticketing system" },
-      { proj: "ChainLink - Link Token balance check and creating an Oracle" },
+      { proj: "Cardano Hello World - Coming Soon..." },
+      { proj: "Polygon Hello World - Coming Soon..." },
+      { proj: "Opensea DAO - Coming Soon..." },
+      { proj: "NFTimeCapsule - Coming Soon..." },
       {
         proj:
-          "A Lotto NFTicket where you can get different odds on prizes.  Loot box meets lotto ticket.",
+          "A Lotto NFTicket where you can get different odds on prizes.  Loot box meets lotto ticket. - Coming Soon...",
       },
     ];
 
@@ -447,11 +452,21 @@ function App() {
       <div>
         <div className="about-bg"></div>
         <div className="aboutTable">
-          <h2>About (Ropsten)</h2>
+          <h2>About</h2>
+          <div className="aboutDesc">
+            This is my sandbox for learning blockchain. Below are some of the
+            ideas/prototypes I am working on or hope to work on soon! NOTE: This
+            is not production worthy code. Just a place to try out some ideas.
+            Should be something new every days so please stop by and check it
+            out. Any Questions or comments or just want to say hi? Send them to:
+            daniel.e.munto@gmail.com!
+          </div>
           <div className="aboutText">
-            {projects.map((project) => (
-              <p>{project.proj}</p>
-            ))}
+            <ul class="aboutList">
+              {projects.map((project) => (
+                <li>{project.proj}</li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>
