@@ -428,23 +428,37 @@ function App() {
 
   function About() {
     const projects = [
-      { proj: "DAN Token and faucet (Ropsten)" },
-      { proj: "Account Lookup Page - DAN, ETH (Ropsten)" },
-      { proj: "Transfer ETH between my accounts (Ropsten)" },
-      { proj: "Solana/Rust Project (UC)" },
-      { proj: "GoLang Web3 Project (UC)" },
-      { proj: "NFTicket - A Smart contract ticketing system (Ropsten) (UC)" },
+      {
+        proj: "DAN Token and faucet (Ropsten)",
+        link: "/DanTokens",
+      },
+      {
+        proj: "Account Lookup Page - DAN, ETH (Ropsten)",
+        link: "/AccountInfo",
+      },
+      {
+        proj: "Transfer ETH between my accounts (Ropsten)",
+        link: "/TransferTokens",
+      },
+      { proj: "Solana/Rust Project (UC)", link: "/About" },
+      { proj: "GoLang Web3 Project (UC)", link: "/About" },
+      {
+        proj: "NFTicket - A Smart contract ticketing system (Ropsten) (UC)",
+        link: "/vendor",
+      },
       {
         proj:
           "ChainLink - Link Token balance check and creating an Oracle - Coming Soon...",
+        link: "/About",
       },
-      { proj: "Cardano Hello World - Coming Soon..." },
-      { proj: "Polygon Hello World - Coming Soon..." },
-      { proj: "Opensea DAO - Coming Soon..." },
-      { proj: "NFTimeCapsule - Coming Soon..." },
+      { proj: "Cardano Hello World - Coming Soon...", link: "/About" },
+      { proj: "Polygon Hello World - Coming Soon...", link: "/About" },
+      { proj: "Opensea DAO - Coming Soon...", link: "/About" },
+      { proj: "NFTimeCapsule - Coming Soon...", link: "/About" },
       {
         proj:
           "A Lotto NFTicket, when purchased, would have the opportunity to win prizes/crypto.  Think Lotto Ticket meets Loot box. - Coming Soon...",
+        link: "/About",
       },
     ];
 
@@ -463,8 +477,12 @@ function App() {
           </div>
           <div className="aboutText">
             <ul class="aboutList">
+              <span></span>
+
               {projects.map((project) => (
-                <li>{project.proj}</li>
+                <li>
+                  <Link to={project.link}>{project.proj}</Link>
+                </li>
               ))}
             </ul>
           </div>
