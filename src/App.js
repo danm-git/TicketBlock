@@ -24,6 +24,7 @@ function App() {
   // const [accounts, setAccounts] = useState();
 
   const faucetAmount = 50;
+  var listId = 0;
 
   async function requestAccount() {
     await window.ethereum.request({
@@ -476,11 +477,11 @@ function App() {
             daniel.e.munto@gmail.com!
           </div>
           <div className="aboutText">
-            <ul class="aboutList">
+            <ul className="aboutList">
               <span></span>
 
               {projects.map((project) => (
-                <li>
+                <li key={listId++}>
                   <Link to={project.link}>{project.proj}</Link>
                 </li>
               ))}

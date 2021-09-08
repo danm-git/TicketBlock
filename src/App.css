@@ -284,6 +284,10 @@ body {
   .accountInfoTable {
     margin-left: 15%;
   }
+
+  .aboutTable {
+    margin-left: 15%;
+  }
 }
 
 @media (max-width: 555px) {
@@ -292,6 +296,10 @@ body {
   }
 
   .accountInfoTable {
+    margin-left: 2%;
+  }
+
+  .aboutTable {
     margin-left: 2%;
   }
 }
