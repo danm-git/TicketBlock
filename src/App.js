@@ -210,6 +210,16 @@ function App() {
             <Route path="/about">
               <About />
             </Route>
+            <Route
+              path="/algo"
+              component={() => {
+                var a = document.createElement("a");
+                a.href = "https://algo.blockc.xyz/";
+                a.setAttribute("target", "_blank");
+                a.click();
+                return null;
+              }}
+            />
           </Switch>
           <HeaderLinks />
         </div>
@@ -229,6 +239,9 @@ function App() {
           </span>
           <span>
             <Link to="/DanTokens">Dan Token Faucet</Link>
+          </span>
+          <span>
+            <Link to="/algo">Algorand Sandbox</Link>
           </span>
           <span>
             <Link to="/TransferTokens">Transfer Tokens</Link>
@@ -429,6 +442,10 @@ function App() {
 
   function About() {
     const projects = [
+      {
+        proj: "(New) Algorand Sandbox - Learning Algorand!",
+        link: "/algo",
+      },
       {
         proj: "DAN Token and faucet (Ropsten)",
         link: "/DanTokens",
